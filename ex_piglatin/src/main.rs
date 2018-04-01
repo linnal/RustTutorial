@@ -9,10 +9,10 @@ fn main() {
 
 fn convert_to_piglatin(word: &str) -> String {
     let first_letter = &word.chars().next().unwrap();
-    if is_constant(*first_letter) {
-        return format!("{}-{}ay", &word[1..], first_letter);
+    if is_vowel(*first_letter) {
+        return format!("{}-hay", word);
     }
-    format!("{}-hay", word)
+    format!("{}-{}ay", &word[1..], first_letter)
 }
 
 fn is_vowel(ch: char) -> bool {
@@ -20,8 +20,4 @@ fn is_vowel(ch: char) -> bool {
         'a' | 'e' | 'i' | 'o' | 'y' | 'u' => true,
         _ => false
     }
-}
-
-fn is_constant(ch: char) -> bool {
-    !is_vowel(ch)
 }
