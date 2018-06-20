@@ -1,13 +1,18 @@
 use std::iter::Peekable;
 use std::str::Chars;
 
+ #[derive(Debug, PartialEq)]
+pub enum OperationError {
+    OperationNotFound(char)
+}
+
 pub struct Interpreter<'a> {
     text: & 'a str,
 }
 
 impl <'a> Interpreter<'a> {
 
-    pub fn evaluate(&self) -> Result<i32, String> {
+    pub fn evaluate(&self) -> Result<i32, OperationError> {
         let mut text_chars: Peekable<Chars> = self.text.chars().peekable();
 
         let left = self.extract_int(&mut text_chars);
@@ -16,7 +21,7 @@ impl <'a> Interpreter<'a> {
         match op {
             '+' => Ok(left as i32 + right as i32),
             '-' => Ok(left as i32 - right as i32),
-            _ => Err("Operation not found".to_string())
+            _ => Err(OperationError::OperationNotFound(op))
         }
     }
 
@@ -70,7 +75,7 @@ mod tests {
         let result = interpreter.evaluate();
 
         assert!(result.is_err());
-        assert_eq!(result.unwrap_err(), "Operation not found".to_string());
+        assert_eq!(result.unwrap_err(), OperationError::OperationNotFound('w'));
     }
 
     #[test]
