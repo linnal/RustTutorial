@@ -26,11 +26,11 @@ impl<'a> Interpreter<'a> {
 
     fn extract_int(&self, chars: &mut Peekable<Chars>) -> Result<i32, OperationError> {
         let mut number = String::new();
+        self.skip_space(chars);
         while chars.peek() != None {
-            if chars.peek().unwrap() == &' ' {
-                chars.next();
-            } else if chars.peek().unwrap().is_digit(10) {
-                number.push(chars.next().unwrap());
+            if chars.peek().unwrap().is_digit(10) {
+                let ch = chars.next().unwrap();
+                number.push(ch);
             } else {
                 break;
             }
@@ -39,7 +39,14 @@ impl<'a> Interpreter<'a> {
     }
 
     fn extract_op(&self, chars: &mut Peekable<Chars>) -> Operator {
+        self.skip_space(chars);
         let op = chars.next();
         op.unwrap().into()
+    }
+
+    fn skip_space(&self, chars: &mut Peekable<Chars>) {
+        while chars.peek() != None && chars.peek().unwrap() == &' ' {
+            chars.next();
+        }
     }
 }

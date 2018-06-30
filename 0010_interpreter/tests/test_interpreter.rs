@@ -54,3 +54,12 @@ fn it_returns_not_a_number() {
     assert!(result.is_err());
     assert_eq!(result.unwrap_err(), OperationError::NotANumber);
 }
+
+#[test]
+fn it_treats_spaces_as_the_end_of_each_clouse() {
+    let interpreter = Interpreter { text: &"2 2 + 3" };
+    let result = interpreter.evaluate();
+
+    assert!(result.is_err());
+    assert_eq!(result.unwrap_err(), OperationError::NotANumber);
+}
